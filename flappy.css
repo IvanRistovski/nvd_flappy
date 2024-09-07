@@ -1,0 +1,19 @@
+body{
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+#board {
+    background-image: url("assets/flappy-background.png");
+}
+canvas {
+    border: 1px solid black;
+}
+.Character_img{
+    width: 40px;
+    padding-right: 20px;
+    padding-top: 10px;
+}
+.Character_you{
+    display: block;
+
+}
