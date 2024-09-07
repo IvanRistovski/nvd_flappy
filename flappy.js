@@ -192,18 +192,18 @@ window.onload = function() {
         characterElement.innerHTML = `
         <div class="Character_sprite grid-cell"></div>
         <div class="Character_name-container">
-          <span class="Character_name"></span>
-          <span class="Character_coins">0</span>
+            <img src="" class="Character_img"/>
+            <span class="Character_name"></span>
         </div>
         <div class="Character_you-arrow"></div>
     `;
-        playerElements[player.id] = characterElement;
 
-        characterElement.querySelector(".Character_name").innerText = player.name;
-        characterElement.querySelector(".Character_coins").innerText = player.coins;
-
-        characterElement.setAttribute("data-color", player.color);
-        gameContainer.appendChild(characterElement);
+    playerElements[player.id] = characterElement;
+    characterElement.querySelector(".Character_name").innerText = player.name;
+    const imgElement = characterElement.querySelector(".Character_img");
+    imgElement.src = "assets/flappy-bird-" + `${player.color}` + ".png";
+   // characterElement.setAttribute("data-color", player.color);
+    gameContainer.appendChild(characterElement);
     }
 
     function updatePlayerElement(playerId, playerData) {
@@ -264,7 +264,7 @@ window.onload = function() {
         if (board) {
             context.clearRect(0, 0, board.width, board.height);
             context.fillStyle = "white";
-            context.font = "20px sans-serif";
+            context.font = "20px 'Press Start 2P', sans-serif";
             context.fillText("Press Arrow Up to Start", boardWidth / 4, boardHeight / 2);
 
             //Draw the bird image
@@ -354,19 +354,24 @@ window.onload = function() {
                 // If only one player is alive, show the game over message on this player's screen
                 const winnerName = alivePlayers[0].name;
                 context.fillStyle = "white";
-                context.font = "10px sans-serif";
-                context.fillText(`GAME OVER, ${winnerName} WINS`, 5, 90);
+                context.font = "12px 'Press Start 2P', sans-serif";
+                context.fillText(`GAME OVER,`, 5, 90);
+                context.fillText(`${winnerName} WINS`, 5, 120);
+                context.fillText("RESTART THE GAME", 5, 150);
+            context.fillText("TO PLAY AGAIN", 5, 180);
             }
         } else if (alivePlayers.length === 1 && alivePlayers[0].id === playerId) {
             // If this is the last player alive, show "YOU WON" when they die
             context.fillStyle = "white";
-            context.font = "20px sans-serif";
+            context.font = "12px 'Press Start 2P', sans-serif";
             context.fillText("YOU WON", 5, 90);
+            context.fillText("RESTART THE GAME", 5, 120);
+            context.fillText("TO PLAY AGAIN", 5, 150);
             
         } else {
             // Score display
             context.fillStyle = "white";
-            context.font = "10px sans-serif";
+            context.font = "12px 'Press Start 2P', sans-serif";
             score += 1;
             context.fillText(score, 5, 45);
         }

@@ -72,10 +72,10 @@ window.onload = function() {
 
     function getName() {
         const adjective = randomFromArray([
-            "knowledgeable", "coordinated", "defective", "ready", "grumpy",
-            "hysterical", "bored", "hateful", "longing", "laughable",
-            "grotesque", "jumpy", "noxious", "abashed", "whimsical",
-            "lavish", "zesty", "quiet", "obscene", "unkempt"
+            "Knowledgeable", "Coordinated", "Defective", "Ready", "Grumpy",
+            "Hysterical", "Bored", "Hateful", "Longing", "Laughable",
+            "Grotesque", "Jumpy", "Noxious", "Abashed", "Whimsical",
+            "Lavish", "Zesty", "Quiet", "Obscene", "Unkempt"
         ]);
         const birdName = randomFromArray([
             "Sparrow", "Eagle", "Parrot", "Penguin", "Hummingbird",
@@ -144,21 +144,19 @@ window.onload = function() {
         if (player.id === playerId) {
             characterElement.classList.add("you");
         }
-
+        
         characterElement.innerHTML = `
-        <div class="Character_sprite grid-cell"></div>
         <div class="Character_name-container">
           <span class="Character_name"></span>
-          <span class="Character_coins">0</span>
         </div>
-        <div class="Character_you-arrow"></div>
+        <img class="Character_img" src="assets/flappy-bird-yellow" alt="bird">
     `;
         playerElements[player.id] = characterElement;
-
         characterElement.querySelector(".Character_name").innerText = player.name;
-        characterElement.querySelector(".Character_coins").innerText = player.coins;
+        characterElement.querySelector(".Character_img").src = 'assets/flappy-bird-${player.color}.png'
+        const imgElement = characterElement.querySelector(".Character_img");
 
-        characterElement.setAttribute("data-color", player.color);
+       // characterElement.setAttribute("data-color", player.color);
         gameContainer.appendChild(characterElement);
     }
 
