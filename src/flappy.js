@@ -8,18 +8,18 @@ window.onload = function() {
     const playerColors = ["black", "blue", "brown", "cyan", "gray", "green", "peach", "pink", "purple", "red", "white", "yellow"];
     const reversedPlayerColors = ["black", "blue", "brown", "cyan", "gray", "green"];
     const birdImages = {
-        "black": "src/assets/flappy-bird-black.png",
-        "blue": "src/assets/flappy-bird-blue.png",
-        "brown": "src/assets/flappy-bird-brown.png",
-        "cyan": "src/assets/flappy-bird-cyan.png",
-        "gray": "src/assets/flappy-bird-gray.png",
-        "green": "src/assets/flappy-bird-green.png",
-        "peach": "src/assets/flappy-bird-peach.png",
-        "pink": "src/assets/flappy-bird-pink.png",
-        "purple": "src/assets/flappy-bird-purple.png",
-        "red": "src/assets/flappy-bird-red.png",
-        "white": "src/assets/flappy-bird-white.png",
-        "yellow": "src/assets/flappy-bird-yellow.png",
+        "black": "assets/flappy-bird-black.png",
+        "blue": "assets/flappy-bird-blue.png",
+        "brown": "assets/flappy-bird-brown.png",
+        "cyan": "assets/flappy-bird-cyan.png",
+        "gray": "assets/flappy-bird-gray.png",
+        "green": "assets/flappy-bird-green.png",
+        "peach": "assets/flappy-bird-peach.png",
+        "pink": "assets/flappy-bird-pink.png",
+        "purple": "assets/flappy-bird-purple.png",
+        "red": "assets/flappy-bird-red.png",
+        "white": "assets/flappy-bird-white.png",
+        "yellow": "assets/flappy-bird-yellow.png",
     };
     // Flappy Bird-related variables
     let board;
@@ -171,7 +171,7 @@ window.onload = function() {
     playerElements[player.id] = characterElement;
     characterElement.querySelector(".Character_name").innerText = player.name;
     const imgElement = characterElement.querySelector(".Character_img");
-    imgElement.src = "src/assets/flappy-bird-" + `${player.color}` + ".png";
+    imgElement.src = "assets/flappy-bird-" + `${player.color}` + ".png";
     gameContainer.appendChild(characterElement);
     }
 
@@ -198,7 +198,7 @@ window.onload = function() {
         context = board.getContext("2d");
 
         birdImg = new Image();
-        birdImg.src = birdImages[color] || "src/assets/flappy-bird-yellow.png"; // Default to yellow if color not found
+        birdImg.src = birdImages[color] || "assets/flappy-bird-yellow.png"; // Default to yellow if color not found
         birdImg.onload = function() {
             context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
         };
@@ -229,10 +229,10 @@ window.onload = function() {
        
             gameStarted = true;
             topPipeImg = new Image();
-            topPipeImg.src = "src/assets/pipe1.png";
+            topPipeImg.src = "assets/pipe1.png";
 
             bottomPipeImg = new Image();
-            bottomPipeImg.src = "src/assets/pipe2.png";
+            bottomPipeImg.src = "assets/pipe2.png";
 
             
             setInterval(placePipes, 1500); // every 1.5 seconds
@@ -316,7 +316,7 @@ window.onload = function() {
         }
         let pipeY = predefinedPipeYValues[currentPipeIndex];
         let reversedPipeY = reversedPipeYValues[currentPipeIndex]
-        let openingSpace = board.height / 6;
+        let openingSpace = board.height / 4;
         const allPlayersReversed = Object.values(players).every(player => player.reversed);
         
 
