@@ -21,11 +21,6 @@ window.onload = function() {
         "white": "assets/flappy-bird-white.png",
         "yellow": "assets/flappy-bird-yellow.png",
     };
-
-    const gameContainer = document.querySelector(".game-container");
-    //const canvasContainer = document.querySelector(".canvas-container"); 
-
-
     // Flappy Bird-related variables
     let board;
     let boardHeight = 640;
@@ -67,19 +62,10 @@ window.onload = function() {
         -270, -240, -330, -150, -390
     ];
     
-   
-    // Reversed version of the predefined array
-    
-
-    // Flag to determine which array to use
     
     let useReversed = false;
-    let currentPipeIndex = 0; // Index to track the current pipe position
+    let currentPipeIndex = 0; 
     
-
-
-    
-
     let topPipeImg;
     let bottomPipeImg;
 
@@ -89,27 +75,23 @@ window.onload = function() {
     let jumped = false; 
 
     let gameOver = false;
-    let score = 0;
     let gameStarted = false;
     let waitingForPlayers=false;
 
+    const gameContainer = document.querySelector(".game-container");
     const playerYpositions = [(boardHeight / 1.5),(boardHeight / 2),(boardHeight / 2.5),(boardHeight / 3)]
 
     // Utility functions
-
-
-    
-
     function randomFromArray(array) {
         return array[Math.floor(Math.random() * array.length)];
     }
 
     function getName() {
         const adjective = randomFromArray([
-            "knowledgeable", "coordinated", "defective", "ready", "grumpy",
-            "hysterical", "bored", "hateful", "longing", "laughable",
-            "grotesque", "jumpy", "noxious", "abashed", "whimsical",
-            "lavish", "zesty", "quiet", "obscene", "unkempt"
+            "Knowledgeable", "Coordinated", "Defective", "Ready", "Grumpy",
+            "hysterical", "Bored", "Hateful", "Longing", "Laughable",
+            "Grotesque", "Jumpy", "Noxious", "Abashed", "Whimsical",
+            "Lavish", "Zesty", "Quiet", "Obscene", "Unkempt"
         ]);
         const birdName = randomFromArray([
             "Sparrow", "Eagle", "Parrot", "Penguin", "Hummingbird",
@@ -119,10 +101,10 @@ window.onload = function() {
         ]);
         return `${adjective} ${birdName}`;
     }
+
     function drawAllBirds() {
         if (!context) return;
-        //setInterval((context.clearRect(0, 0, board.width, board.height),500000)); // Clear the canvas
-    
+        
         Object.keys(players).forEach(id => {
             const player = players[id];
             const img = new Image();
@@ -131,19 +113,15 @@ window.onload = function() {
         });
     }
 
-    // Firebase-related game initialization(boardHeight / 1.5)
     function initGame() {
         const allPlayersRef = firebase.database().ref(`players`);
-        //const allCoinsRef = firebase.database().ref(`coins`);
-        
-
-        // Handle player data changes
+       
         allPlayersRef.on("value", (snapshot) => {
             players = snapshot.val() || {};
             drawAllBirds();
-             // Check if all players are ready whenever a player state changes
+
             checkIfAllPlayersReady();
-            // Make sure the bird image is updated when player data changes
+            
             if (players[playerId]) {
                 birdImg.src = birdImages[players[playerId].color];
             }
@@ -162,7 +140,7 @@ window.onload = function() {
             removePlayerElement(removedPlayer.id);
         });
 
-        // Handle player updates (e.g., movement, score)
+        // Handle player updates
         allPlayersRef.on("child_changed", (snapshot) => {
             const changedPlayer = snapshot.val();
             updatePlayerElement(changedPlayer.id, changedPlayer);
@@ -174,10 +152,8 @@ window.onload = function() {
     
         if (hasColor) {
             useReversed = true; // Set the flag to use the reversed array
-            console.log('Using reversed array because a player has yellow or green color.');
         } else {
             useReversed = false; // Otherwise, use the normal array
-            console.log('Using normal array.');
         }
     }
 
@@ -185,24 +161,17 @@ window.onload = function() {
         const characterElement = document.createElement("div");
         characterElement.classList.add("Character");
 
-        if (player.id === playerId) {
-            characterElement.classList.add("you");
-        }
-
         characterElement.innerHTML = `
-        <div class="Character_sprite grid-cell"></div>
         <div class="Character_name-container">
             <img src="" class="Character_img"/>
             <span class="Character_name"></span>
         </div>
-        <div class="Character_you-arrow"></div>
     `;
 
     playerElements[player.id] = characterElement;
     characterElement.querySelector(".Character_name").innerText = player.name;
     const imgElement = characterElement.querySelector(".Character_img");
     imgElement.src = "assets/flappy-bird-" + `${player.color}` + ".png";
-   // characterElement.setAttribute("data-color", player.color);
     gameContainer.appendChild(characterElement);
     }
 
@@ -210,8 +179,6 @@ window.onload = function() {
         const characterElement = playerElements[playerId];
         if (characterElement) {
             characterElement.querySelector(".Character_name").innerText = playerData.name;
-            characterElement.querySelector(".Character_coins").innerText = playerData.coins;
-            // You can update other properties like position, color, etc.
         }
     }
 
@@ -223,10 +190,6 @@ window.onload = function() {
         }
     }
 
-    // Hide the canvas eially
-    
-    
-    
     // Flappy Bird game setup
     function setupFlappyBirdGame(color) {
         board = document.getElementById("board");
@@ -239,17 +202,6 @@ window.onload = function() {
         birdImg.onload = function() {
             context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
         };
-
-        //topPipeImg = new Image();
-        //topPipeImg.src = "assets/flappy-toppipe-gray.png";
-
-        //bottomPipeImg = new Image();
-        //bottomPipeImg.src = "assets/flappy-botpipe-gray.png";
- //PRAZNO ISTOTO #3
-
-         //setInterval(placePipes, 5000); // every 1.5 seconds
-         
-
          // Wait until background and bird images are loaded
         document.addEventListener("keydown", startGame);
         document.addEventListener("keydown", moveBird);
@@ -260,18 +212,6 @@ window.onload = function() {
         });
     }
 
-    function showStartMessage() {
-        if (board) {
-            context.clearRect(0, 0, board.width, board.height);
-            context.fillStyle = "white";
-            context.font = "20px 'Press Start 2P', sans-serif";
-            context.fillText("Press Arrow Up to Start", boardWidth / 4, boardHeight / 2);
-
-            //Draw the bird image
-            context.drawImage(birdImg, bird.x, birdY, bird.width, bird.height);
-            //console.log(birdImg);
-        }
-    }
     function checkIfAllPlayersReady() {
         const allPlayersReady = Object.values(players).every(player => player.ready);
         checkForColorAndSetReversed(reversedPlayerColors);
@@ -288,7 +228,6 @@ window.onload = function() {
      function startGameForAllPlayers() {
        
             gameStarted = true;
-            hideStartMessage();
             topPipeImg = new Image();
             topPipeImg.src = "assets/pipe1.png";
 
@@ -300,17 +239,9 @@ window.onload = function() {
             requestAnimationFrame(update);
         }
 
-    function hideStartMessage() {
-        if (board) {
-            context.clearRect(0, 0, board.width, board.height);
-        }
-    }
-
     function update() {
         if (!context) return;
-        //requestAnimationFrame(update); SO OVA SE GLITCHNUVA
         
-       
         context.clearRect(0, 0, board.width, board.height);
     
         // Draw pipes first
@@ -318,7 +249,6 @@ window.onload = function() {
             let pipe = pipeArray[i];
             pipe.x += velocityX;
             context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height);   
-    
         }
 
         drawAllBirds();
@@ -336,7 +266,7 @@ window.onload = function() {
                     break;
                 }
             }
-            // Pagja dole
+            // If the bird falls
             if (bird.y > board.height) {
                 playerRef.update({ gameOver: true });
             }
@@ -368,19 +298,11 @@ window.onload = function() {
             context.fillText("RESTART THE GAME", 5, 120);
             context.fillText("TO PLAY AGAIN", 5, 150);
             
-        } else {
-            // Score display
-            context.fillStyle = "white";
-            context.font = "12px 'Press Start 2P', sans-serif";
-            score += 1;
-            context.fillText(score, 5, 45);
         }
-    
-        // Update the player's position and score in Firebase
+        // Update the player's position in Firebase
         playerRef.update({
             x: bird.x,
             y: bird.y,
-            score: score
         });
         
         requestAnimationFrame(update);
@@ -388,12 +310,10 @@ window.onload = function() {
     }
     
     
-
     function placePipes() {
         if (gameOver || !gameStarted) {
             return;
         }
-        //let randomPipeY = pipeY - pipeHeight / 4 - Math.random() * (pipeHeight / 2);
         let pipeY = predefinedPipeYValues[currentPipeIndex];
         let reversedPipeY = reversedPipeYValues[currentPipeIndex]
         let openingSpace = board.height / 4;
@@ -451,14 +371,12 @@ window.onload = function() {
 function resetGameState() {
     bird.y = birdY;
     velocityY = 0; // Reset velocity
-    score = 0;
     gameOver = false;
     pipeArray = [];
     useReversed = !useReversed;
 
     // Clear and reinitialize the canvas
     context.clearRect(0, 0, board.width, board.height);
-    showStartMessage();
 
     // Reinitialize game elements
     setupFlappyBirdGame(players[playerId].color);
@@ -468,25 +386,17 @@ function resetGameState() {
     playerRef.update({
         x: birdX,
         y: birdY,
-        score: 0,
         gameOver: false
     });
 }
     
-
     function moveBird(e) {
         if (players[playerId].gameOver) return;
 
         if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX") {
-            // Jump
+            
             velocityY = -6;
-            jumped = true;
-            // if (!jumped && gameStarted) {
-            //     velocityY = -6;
-            //     jumped = true; // Set the flag to indicate the bird has jumped
-            // }
-
-            // Reset game
+            jumped = true;   
             if (gameOver && gameStarted) {
                 resetGameState();
             }
@@ -509,9 +419,6 @@ function resetGameState() {
             const name = getName();
             const color = randomFromArray(playerColors)
 
-
-
-            
             // Determine the number of existing players
             const existingPlayers = Object.keys(players).length;
 
@@ -524,7 +431,6 @@ function resetGameState() {
                 color,
                 x: 3,  // Fixed x position for all players
                 y: assignedY, // Assign the calculated y position
-                coins: 0,
                 gameOver: false,
                 ready: false,
                 reversed: false
